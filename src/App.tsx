@@ -6,12 +6,21 @@ import { PieChart, Pie, Sector } from 'recharts';
 import { SessionLogic } from './SessionLogic';
 import './App.css';
 
-// RUBRIC REQUIREMENT: Types / Data Structures
 type Speaker = 'MENTOR' | 'MENTEE';
 
-const parseSessionData = (text: string) => {
+// RUBRIC REQUIREMENT 2: Functions with data types
+// (Takes a string, explicitly returns an object with typed properties)
+const parseSessionData = (text: string): {
+    coordinator: string;
+    mentor: string;
+    mentorTimeMs: number;
+    menteeTimeMs: number;
+    posFeedback: string;
+    impFeedback: string;
+    notes: string;
+} => {
     if (!text.includes('--- 1:1 MENTORING SESSION DASHBOARD ---')) {
-        // RUBRIC REQUIREMENT: Throwing Exceptions (Manual throw for invalid file type)
+        // RUBRIC REQUIREMENT Stretch Challenge: Demonstrate throwing and handling exceptions (Throwing)
         throw new Error("Invalid file type. Please upload a valid Dashboard Export .txt file.");
     }
 
@@ -33,7 +42,7 @@ const parseSessionData = (text: string) => {
     const menteeTimeStr = parseRegex(/Mentee Time: .*?\((.*?)\)/);
 
     if (!mentorTimeStr || !menteeTimeStr) {
-        // RUBRIC REQUIREMENT: Throwing Exceptions (Manual throw for corrupted internal data)
+        // RUBRIC REQUIREMENT Stretch Challenge: Demonstrate throwing and handling exceptions (Throwing)
         throw new Error("Corrupted file data: Could not read session times.");
     }
 
@@ -44,7 +53,7 @@ const parseSessionData = (text: string) => {
     const timeToMs = (tStr: string) => {
         const [m, s] = tStr.split(':').map(Number);
         if (isNaN(m) || isNaN(s)) {
-            // RUBRIC REQUIREMENT: Throwing Exceptions (Manual throw for bad math/time format)
+            // RUBRIC REQUIREMENT Stretch Challenge: Demonstrate throwing and handling exceptions (Throwing)
             throw new Error("Time data format is corrupted.");
         }
         return (m * 60 + s) * 1000;
@@ -62,6 +71,7 @@ const parseSessionData = (text: string) => {
 };
 
 function App() {
+    // RUBRIC REQUIREMENT 1: Variables with data types
     const [mentorTime, setMentorTime] = useState<number>(0);
     const [menteeTime, setMenteeTime] = useState<number>(0);
     const [activeSpeaker, setActiveSpeaker] = useState<Speaker>('MENTOR');
@@ -112,22 +122,26 @@ function App() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // RUBRIC REQUIREMENT: OOP & Classes (Instantiating the class)
+    // RUBRIC REQUIREMENT 3: Classes
     const logic = useMemo(() => new SessionLogic(mentorTime, menteeTime), [mentorTime, menteeTime]);
-    const [mentorPercent, menteePercent] = logic.getPercentages(activeSpeaker);
+
+    // RUBRIC REQUIREMENT 5: Tuples (A fixed-length array containing exactly two numbers)
+    const percentages: [number, number] = logic.getPercentages(activeSpeaker);
+    const mentorPercent = percentages[0];
+    const menteePercent = percentages[1];
+
     const totalFormatted = logic.formatTime(logic.getTotalTime());
 
-    // RUBRIC REQUIREMENT: Types / Data Structures (Array of Objects)
+    // RUBRIC REQUIREMENT 4: Arrays
+    const COLORS: string[] = ['#6BA4FF', '#FFFACD'];
+
     const data = [
         { name: 'Mentor', value: mentorPercent, timeStr: logic.formatTime(mentorTime) },
         { name: 'Mentee', value: menteePercent, timeStr: logic.formatTime(menteeTime) }
     ];
 
-    const COLORS = ['#6BA4FF', '#FFFACD'];
-
     const handleFocus = () => setIsPaused(true);
 
-    // RUBRIC REQUIREMENT: File I/O (Exporting state to a .txt file)
     const handleExport = () => {
         setIsPaused(true);
 
@@ -169,7 +183,7 @@ ${extraNotes || 'None'}
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            // RUBRIC REQUIREMENT: Handling Exceptions (try/catch block prevents app crash)
+            // RUBRIC REQUIREMENT Stretch Challenge: Demonstrate throwing and handling exceptions (Handling)
             try {
                 const text = e.target?.result as string;
                 const parsedData = parseSessionData(text);
@@ -211,7 +225,7 @@ ${extraNotes || 'None'}
                 <input
                     className="header-input"
                     type="text"
-                    placeholder="Coordinator Name"
+                    placeholder="Coordinator Name..."
                     value={coordinatorName}
                     onChange={(e) => setCoordinatorName(e.target.value)}
                     onFocus={handleFocus}
@@ -234,7 +248,7 @@ ${extraNotes || 'None'}
                     <input
                         className="mentor-name-input"
                         type="text"
-                        placeholder="Mentor Name"
+                        placeholder="Enter Mentor Name..."
                         value={mentorName}
                         onChange={(e) => setMentorName(e.target.value)}
                         onFocus={handleFocus}
