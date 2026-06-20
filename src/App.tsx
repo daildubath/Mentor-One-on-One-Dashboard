@@ -225,7 +225,7 @@ ${extraNotes || 'None'}
                 <input
                     className="header-input"
                     type="text"
-                    placeholder="Coordinator Name..."
+                    placeholder="Coordinator Name"
                     value={coordinatorName}
                     onChange={(e) => setCoordinatorName(e.target.value)}
                     onFocus={handleFocus}
@@ -248,7 +248,7 @@ ${extraNotes || 'None'}
                     <input
                         className="mentor-name-input"
                         type="text"
-                        placeholder="Enter Mentor Name..."
+                        placeholder="Mentor Name"
                         value={mentorName}
                         onChange={(e) => setMentorName(e.target.value)}
                         onFocus={handleFocus}
