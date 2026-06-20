@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+# MentorMetrics: The 1:1 Talk-Time Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React and TypeScript-based web application designed to help coordinators track, visualize, and analyze mentor versus mentee speaking time during 1:1 sessions. It features live pie chart visualizations, keyboard shortcuts for seamless switching, text fields for performance feedback, and the ability to export/import session data as `.txt` files.
+The live website can be found here: https://daildubath.github.io/Mentor-One-on-One-Dashboard/
 
-Currently, two official plugins are available:
+## Instructions for Build and Use
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Steps to build and/or run the software:
 
-## React Compiler
+1. Open the project folder in your terminal.
+2. Run `npm install` to download all necessary dependencies.
+3. Run `npm run dev` to start the local development server and view the app in your browser.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Instructions for using the software:
 
-## Expanding the ESLint configuration
+1. Press the **Spacebar** to toggle the active speaker (Mentor/Mentee) and start the timer.
+2. Press **Ctrl + Space** to pause or resume the timers. (Clicking into any text box also auto-pauses the timer).
+3. Fill out the feedback boxes, and use the **Export (.txt)** button to save the session data, or **Import (.txt)** to load a past session.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development Environment
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To recreate the development environment, you need the following software and/or libraries with the specified versions:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* WebStorm IDE
+* Node.js & npm
+* Vite (React Framework)
+* TypeScript
+* Recharts (Data visualization library)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Useful Websites to Learn More
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+I found these websites useful in developing this software:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+* [Google Gemini](https://gemini.google.com/): Assisted heavily in generating the React and TypeScript code for this zero-code challenge.
+* [W3Schools TypeScript Tutorial](https://www.w3schools.com/typescript/): Used to learn TypeScript basics and syntax.
+* [TypeScript Official Docs](https://www.typescriptlang.org/docs/): Served as backup reference material for strict typing.
+* *Note: The final wireframe used to design this project is included in the repository as a PNG.*
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Future Work
+
+The following items I plan to fix, improve, and/or add to this project in the future:
+
+* [ ] Add a dedicated "Reset Session" button to clear the board without needing to refresh the page.
+* [ ] Implement browser `localStorage` so session data is preserved even if the tab is accidentally closed.
+* [ ] Build a more robust file parser to handle user-edited or severely malformed `.txt` files without relying purely on string matching.
+* [ ] Refactor the timer to calculate elapsed time using `Date.now()` instead of `setInterval` to eliminate JavaScript timer drift for hyper-accurate tracking.
