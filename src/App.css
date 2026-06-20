@@ -32,6 +32,7 @@ body {
 .header h1, .header h2 {
   margin: 0;
   font-weight: normal;
+  color: white; /* Added this to override the browser's default black headings */
 }
 
 /* Level 2: Three Column Layout */
