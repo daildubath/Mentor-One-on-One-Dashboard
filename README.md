@@ -40,7 +40,7 @@ I found these websites useful in developing this software:
 
 The following items I plan to fix, improve, and/or add to this project in the future:
 
-* [ ] Add a dedicated "Reset Session" button to clear the board without needing to refresh the page.
+* [x] Add a dedicated "Reset Session" button to clear the board without needing to refresh the page.
 * [ ] Implement browser `localStorage` so session data is preserved even if the tab is accidentally closed.
 * [ ] Build a more robust file parser to handle user-edited or severely malformed `.txt` files without relying purely on string matching.
-* [ ] Refactor the timer to calculate elapsed time using `Date.now()` instead of `setInterval` to eliminate JavaScript timer drift for hyper-accurate tracking.
+* [x] Refactor the timer to calculate elapsed time using `Date.now()` instead of `setInterval` to eliminate JavaScript timer drift for hyper-accurate tracking.
