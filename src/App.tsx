@@ -85,21 +85,39 @@ function App() {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    // NEW: Refs to calculate real-time drift flawlessly
+    const lastTickRef = useRef<number>(Date.now());
+    const activeSpeakerRef = useRef<Speaker>(activeSpeaker);
+
+    // Keep the ref constantly updated so the interval always knows who is speaking
+    // without having to stop and restart the timer loop
+    useEffect(() => {
+        activeSpeakerRef.current = activeSpeaker;
+    }, [activeSpeaker]);
+
+    // NEW: Drift-proof Timer Logic
     useEffect(() => {
         let interval: ReturnType<typeof setInterval>;
 
         if (!isPaused) {
+            // Set our starting timestamp the moment we unpause
+            lastTickRef.current = Date.now();
+
             interval = setInterval(() => {
-                if (activeSpeaker === 'MENTOR') {
-                    setMentorTime(prev => prev + 100);
+                const now = Date.now();
+                const delta = now - lastTickRef.current; // Calculates EXACT time passed
+                lastTickRef.current = now;
+
+                if (activeSpeakerRef.current === 'MENTOR') {
+                    setMentorTime(prev => prev + delta);
                 } else {
-                    setMenteeTime(prev => prev + 100);
+                    setMenteeTime(prev => prev + delta);
                 }
-            }, 100);
+            }, 100); // 100ms visual refresh, but mathematically perfectly accurate
         }
 
         return () => clearInterval(interval);
-    }, [isPaused, activeSpeaker]);
+    }, [isPaused]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -208,6 +226,21 @@ ${extraNotes || 'None'}
         reader.readAsText(file);
     };
 
+    // NEW: Reset functionality with safety prompt
+    const handleReset = () => {
+        if (window.confirm("Are you sure you want to reset the session? All unsaved data will be lost.")) {
+            setIsPaused(true);
+            setMentorTime(0);
+            setMenteeTime(0);
+            setActiveSpeaker('MENTOR');
+            setCoordinatorName('');
+            setMentorName('');
+            setPositiveFeedback('');
+            setImprovementFeedback('');
+            setExtraNotes('');
+        }
+    };
+
     return (
         <div className="dashboard-container">
 
@@ -264,6 +297,16 @@ ${extraNotes || 'None'}
                         >
                             IMPORT (.txt)
                         </button>
+
+                        {/* NEW: RESET BUTTON */}
+                        <button
+                            className="small-action-btn"
+                            onClick={handleReset}
+                            style={{ color: '#ff6b6b', borderColor: '#ff6b6b' }} // Subtle red styling to indicate a destructive action
+                        >
+                            RESET
+                        </button>
+
                         <button className="small-action-btn" onClick={handleExport}>
                             EXPORT (.txt)
                         </button>
